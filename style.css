@@ -1,0 +1,40 @@
+body {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.top {
+    padding: 2%;
+    font-family: menlo;
+    font-size: 20px;
+}
+
+.entry {
+    border: 1px solid;
+    padding: 2%;
+}
+
+.tweet {
+    font-size: 15px;
+    font-family: menlo;
+    padding-top: 2%;
+    display: inline;
+}
+
+.timestamp {
+    font-family: monospace;
+}
+
+.user {
+    display: inline;
+    border: none;
+    font-size: 15px;
+    background-color: white;
+    color: blue;
+}
+
+.home {
+    margin-left: 5%;
+}

@@ -14,24 +14,88 @@
 
         var index = streams.home.length - 1;
         var currentIndex = index;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text(tweet.created_at+' @' + tweet.user + ': ' + tweet.message);
-          $tweet.prependTo($body);
-          index -= 1;
+        var username = 'home';
+        var userIndex;
+
+        var $top = $('<div class = "top">Twittler</div>');
+        $top.append($('<button class = "home">Home</button>'));
+        $top.appendTo($body);
+
+
+        function displayHomeStream(){
+          $('.home').hide();
+          username = 'home';
+          $('.entry').remove();
+          currentIndex = 0;
+          while (currentIndex < streams.home.length-1) {
+            var tweet = streams.home[currentIndex];
+            displayEntry(tweet);
+            currentIndex++;
+          }
         }
 
         function getNewTweets(){
-          if (streams.home.length-1 > currentIndex) {
-            currentIndex++;
-            var tweet = streams.home[currentIndex];
-            var $tweet = $('<div></div>');
-            $tweet.text(tweet.created_at +' @' + tweet.user + ': ' + tweet.message);
-            $tweet.prependTo($body);
+          if (username === 'home') {
+            if (streams.home.length-1 > currentIndex) {
+              currentIndex++;
+              var tweet = streams.home[currentIndex];
+              displayEntry(tweet);
+            }
+          } else {
+            if (streams.users[username].length-1 > userIndex) {
+              userIndex++;
+              var tweet = streams.users[username][userIndex];
+              displayEntry(tweet);
+            }
           }
         }
-        setInterval(getNewTweets, 500);
+
+        function displayEntry(tweet){
+          var $entry = $('<div class = "entry"></div>');
+          var $timeStamp = $('<p class = "timestamp"></p>');
+          var $userName = $('<button class = "user"></button>')
+          var $tweet = $('<p class = "tweet"></p>');
+
+          $timeStamp.text(tweet.created_at);
+          $userName.text('@' + tweet.user);
+          $tweet.text(' '+ tweet.message);
+
+          $timeStamp.appendTo($entry);
+          $userName.appendTo($entry);
+          $tweet.appendTo($entry);
+
+          $entry.insertAfter($top);
+        }
+
+        function displayUserStream(){
+          $('.home').show();
+
+          var user = $(this).text();
+          username = user.slice(1, user.length);
+
+          $('.entry').remove();
+
+            userIndex = 0;
+            while(userIndex < streams.users[username].length-1) {
+            var tweet = streams.users[username][userIndex];
+            displayEntry(tweet);
+            userIndex++;
+          }
+
+        }
+
+        //display initial stream contents
+        while(index >= 0){
+            var tweet = streams.home[index];
+            displayEntry(tweet);
+            index -= 1;
+        }
+
+        var intervalID = setInterval(getNewTweets, 500);
+
+        $('body').on('click','.user' , displayUserStream);
+        $('.top').on('click','.home' , displayHomeStream);
+
       });
 
     </script>
